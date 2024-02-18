@@ -4,11 +4,17 @@ import Input from "../../input"
 import TextLine from "../../textLine"
 import { useState } from "react"
 import { register } from "../../../services/auth"
+import toast from "react-hot-toast"
 
 function RegisterForm() {
   const [userName, setUserName] = useState<string>("")
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
+  const [checked, setChecked] = useState<boolean>(false)
+
+  const handleChecked = () => {
+    checked === false ? setChecked(true) : setChecked(false)
+  }
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -18,8 +24,9 @@ function RegisterForm() {
       password: password,
       memberAgreementVersion: "v1",
     }
-    await register(payload)
+    checked ? await register(payload) : toast.error("accept conditions")
   }
+  console.log(checked)
 
   return (
     <form
@@ -60,8 +67,9 @@ function RegisterForm() {
       </label>
       <label className="flex gap-x-1">
         <Input
-          className="outline-none"
+          className={`outline-none`}
           type="checkbox"
+          onChange={handleChecked}
           placholder=""
         />
         <div>I accept the terms and conditions</div>

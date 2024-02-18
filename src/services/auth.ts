@@ -26,13 +26,14 @@ api.interceptors.response.use(
         window.location.href = "/login"
       }, 3000)
     }
-    console.log(response)
 
     return response
   },
   function (error) {
     const isUnAuthorized = error.response.status === 401
-    const badRequest = error.response.status === 400
+    const badRequest =
+      error.response.status === 400 || error.response.status === 409
+
     const errorMessage = error.response.data.message
     if (isUnAuthorized) {
       redirect("/login")
